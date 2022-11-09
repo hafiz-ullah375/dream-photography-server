@@ -17,13 +17,17 @@ async function run() {
     try {
         const photoShootServices = client.db("photoShot").collection("services");
 
-
+        app.post('/services', async (req, res) => {
+            const service = req.body;
+            const result = await photoShootServices.insertOne(service)
+            res.send(result);
+        })
 
         app.get('/services', async (req, res) => {
             // const number = 3;
             const query = {};
             const cursor = photoShootServices.find(query);
-            const services = await cursor.toArray();
+            const services = await cursor.limit(3).toArray();
             res.send({
                 status: true,
                 message: "success",
