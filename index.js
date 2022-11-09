@@ -16,6 +16,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         const photoShootServices = client.db("photoShot").collection("services");
+
+
+
         app.get('/services', async (req, res) => {
             // const number = 3;
             const query = {};
@@ -40,7 +43,17 @@ async function run() {
             })
         })
 
+        app.get('/all-services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectID(id) };
+            const serviceDetails = await photoShootServices.findOne(query);
+            res.send({
+                status: true,
+                message: "success",
+                data: serviceDetails
+            })
 
+        })
 
     }
     finally {
